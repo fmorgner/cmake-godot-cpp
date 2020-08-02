@@ -1,0 +1,3 @@
+sphinx
+sphinxcontrib-moderncmakedomain
+sphinx-material
