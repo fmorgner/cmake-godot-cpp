@@ -56,6 +56,8 @@ Target Properties
 
 #]==========================================================================]
 
+find_package("GodotEngine")
+
 define_property(TARGET PROPERTY "GODOT_BINARY_INSTALL_DIR"
   BRIEF_DOCS "The binary installation directory of the Godot project"
   FULL_DOCS "This property defines the directory in which the target will be installed in order for Godot to find it."
@@ -68,6 +70,8 @@ function(godot_register_library TARGET)
   _godot_target_check_install_dir(INSTALL_DIR "${TARGET}")
   _godot_target_get_library_install_dir(LIBRARY_INSTALL_DIR "${TARGET}")
   _godot_generate_resource_id(RESOURCE_ID)
+
+  file(MAKE_DIRECTORY "${LIBRARY_INSTALL_DIR}")
 
   set_target_properties("${TARGET}" PROPERTIES
     _GODOT_REGISTERED YES
@@ -101,8 +105,12 @@ function(godot_register_library TARGET)
   string(APPEND LIBRARY_DESCRIPTOR "OSX.64=[ ]\n")
   
   file(WRITE "${LIBRARY_DESCRIPTOR_FILE}" ${LIBRARY_DESCRIPTOR})
-  install(FILES "${LIBRARY_DESCRIPTOR_FILE}" DESTINATION "${INSTALL_DIR}")
-  install(TARGETS "${TARGET}" DESTINATION "${LIBRARY_INSTALL_DIR}")
+  add_custom_command(TARGET "${TARGET}"
+    COMMAND "${CMAKE_COMMAND}"
+    ARGS "-E" "copy_if_different" "${LIBRARY_DESCRIPTOR_FILE}" "${INSTALL_DIR}"
+    COMMAND "${CMAKE_COMMAND}"
+    ARGS "-E" "copy_if_different" $<TARGET_FILE:${TARGET}> "${LIBRARY_INSTALL_DIR}"
+  )
 endfunction()
 
 function(godot_register_class TARGET CLASS)
@@ -136,7 +144,10 @@ function(godot_register_class TARGET CLASS)
   string(APPEND CLASS_DESCRIPTOR "\n")
 
   file(WRITE "${CLASS_DESCRIPTOR_FILE}" ${CLASS_DESCRIPTOR})
-  install(FILES "${CLASS_DESCRIPTOR_FILE}" DESTINATION "${INSTALL_DIR}")
+  add_custom_command(TARGET "${TARGET}"
+    COMMAND "${CMAKE_COMMAND}"
+    ARGS "-E" "copy_if_different" "${CLASS_DESCRIPTOR_FILE}" "${INSTALL_DIR}"
+  )
 endfunction()
 
 function(_godot_target_check_install_dir VAR TARGET)
