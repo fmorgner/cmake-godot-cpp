@@ -110,6 +110,7 @@ function(godot_register_library TARGET)
     ARGS "-E" "copy_if_different" "${LIBRARY_DESCRIPTOR_FILE}" "${INSTALL_DIR}"
     COMMAND "${CMAKE_COMMAND}"
     ARGS "-E" "copy_if_different" $<TARGET_FILE:${TARGET}> "${LIBRARY_INSTALL_DIR}"
+    COMMENT "Installing library and library descriptor for ${TARGET}"
   )
 endfunction()
 
@@ -147,6 +148,7 @@ function(godot_register_class TARGET CLASS)
   add_custom_command(TARGET "${TARGET}"
     COMMAND "${CMAKE_COMMAND}"
     ARGS "-E" "copy_if_different" "${CLASS_DESCRIPTOR_FILE}" "${INSTALL_DIR}"
+    COMMENT "Installing descriptor for ${CLASS}::${TARGET}"
   )
 endfunction()
 
