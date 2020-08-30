@@ -37,7 +37,7 @@ Functions
       godot_register_class(<TARGET>
         <CLASS>
       )
-    
+
    This function registeres the given class within the given target as
    a Godot Native 1.1 script. It generates the required :literal:`.gdns`
    script and registers it for installation into the path specified by the
@@ -103,7 +103,7 @@ function(godot_register_library TARGET)
   string(APPEND LIBRARY_DESCRIPTOR "X11.64=[ ]\n")
   string(APPEND LIBRARY_DESCRIPTOR "Windows.64=[ ]\n")
   string(APPEND LIBRARY_DESCRIPTOR "OSX.64=[ ]\n")
-  
+
   file(WRITE "${LIBRARY_DESCRIPTOR_FILE}" ${LIBRARY_DESCRIPTOR})
   add_custom_command(TARGET "${TARGET}"
     COMMAND "${CMAKE_COMMAND}"
@@ -175,7 +175,7 @@ endfunction()
 
 function(_godot_target_check_registered TARGET EXPECTED_VALUE)
   get_target_property(REGISTERED "${TARGET}" _GODOT_REGISTERED)
-  
+
   if(REGISTERED STREQUAL "REGISTERED-NOTFOUND")
     set(REGISTERED NO)
   endif()
