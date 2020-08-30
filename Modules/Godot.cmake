@@ -94,7 +94,7 @@ function(godot_register_library TARGET)
   ### [entry] Sections
   string(APPEND LIBRARY_DESCRIPTOR "[entry]\n\n")
   string(APPEND LIBRARY_DESCRIPTOR "X11.64=\"res://bin/linux/lib${TARGET}.so\"\n")
-  string(APPEND LIBRARY_DESCRIPTOR "Windows.64=\"res://bin/windows/lib${TARGET}.dll\"\n")
+  string(APPEND LIBRARY_DESCRIPTOR "Windows.64=\"res://bin/windows/${TARGET}.dll\"\n")
   string(APPEND LIBRARY_DESCRIPTOR "OSX.64=\"res://bin/macos/lib${TARGET}.dylib\"\n")
   string(APPEND LIBRARY_DESCRIPTOR "\n")
 
