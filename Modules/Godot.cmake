@@ -148,7 +148,7 @@ function(godot_register_class TARGET CLASS)
   add_custom_command(TARGET "${TARGET}"
     COMMAND "${CMAKE_COMMAND}"
     ARGS "-E" "copy_if_different" "${CLASS_DESCRIPTOR_FILE}" "${INSTALL_DIR}"
-    COMMENT "Installing descriptor for ${CLASS}::${TARGET}"
+    COMMENT "Installing class descriptor for ${TARGET}::${CLASS}"
   )
 endfunction()
 
