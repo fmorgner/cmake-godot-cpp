@@ -65,6 +65,7 @@ define_property(TARGET PROPERTY "GODOT_BINARY_INSTALL_DIR"
 
 function(godot_register_library TARGET)
   _godot_target_assert_shared_library("${TARGET}")
+  _godot_apply_mingw_if_necessary("${TARGET}")
   _godot_target_check_registered("${TARGET}" NO)
   _godot_target_ensure_absolute_install("${TARGET}")
   _godot_target_check_install_dir(INSTALL_DIR "${TARGET}")
@@ -235,5 +236,20 @@ function(_godot_target_assert_shared_library TARGET)
   get_target_property(TYPE "${TARGET}" TYPE)
   if(NOT TYPE STREQUAL "SHARED_LIBRARY")
     message(FATAL_ERROR "Target ${TARGET} is not a shared library target")
+  endif()
+endfunction()
+
+function(_godot_apply_mingw_if_necessary TARGET)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_options("${TARGET}" PRIVATE
+      "--static"
+      "-Wl,--no-undefined"
+      "-static-libgcc"
+      "-static-libstdc++"
+    )
+
+    set_target_properties("${TARGET}" PROPERTIES
+      PREFIX ""
+    )
   endif()
 endfunction()
